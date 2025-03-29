@@ -139,6 +139,8 @@ services:
 
 
   network-setup:
+    networks:
+      - besu-net
     build:
         context: .
         dockerfile: Dockerfile
