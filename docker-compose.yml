@@ -1,0 +1,160 @@
+services:
+  node1:
+    networks:
+      - besu-net
+    build:
+        context: .
+        dockerfile: Dockerfile
+    container_name: besu-node1
+    volumes:
+      - ./genesis.json:/config/genesis.json
+      - ./nodes/node1/data:/data
+      - ./config/permissions_config.toml:/config/permissions_config.toml
+    command: >
+      --data-path=/data
+      --genesis-file=/config/genesis.json
+      --permissions-nodes-config-file-enabled
+      --permissions-accounts-config-file-enabled
+      --rpc-http-enabled
+      --rpc-http-api=ADMIN,ETH,NET,PERM,IBFT
+      --host-allowlist='*'
+      --rpc-http-cors-origins='*'
+      --rpc-http-port=8545
+      --p2p-port=30303
+      --profile=ENTERPRISE
+    ports:
+      - "8545:8545"
+      - "30303:30303"
+    healthcheck:
+      test: ["CMD", "sh", "-c",
+            "curl -s -X POST --data '{\"jsonrpc\":\"2.0\",\"method\":\"net_enode\",\"params\":[],\"id\":1}' \
+            -H 'Content-Type: application/json' http://localhost:8545 | grep -q 'enode://'"]
+      interval: 5s
+      retries: 10
+      start_period: 10s
+
+
+  node2:
+    networks:
+      - besu-net
+    build:
+        context: .
+        dockerfile: Dockerfile
+    container_name: besu-node2
+    volumes:
+      - ./genesis.json:/config/genesis.json
+      - ./nodes/node2/data:/data
+      - ./config/permissions_config.toml:/config/permissions_config.toml
+    command: >
+      --data-path=/data
+      --genesis-file=/config/genesis.json
+      --permissions-nodes-config-file-enabled
+      --permissions-accounts-config-file-enabled
+      --rpc-http-enabled
+      --rpc-http-api=ADMIN,ETH,NET,PERM,IBFT
+      --host-allowlist="*"
+      --rpc-http-cors-origins="*"
+      --rpc-http-port=8546
+      --p2p-port=30304
+      --profile=ENTERPRISE
+    ports:
+      - "8546:8546"
+      - "30304:30304"
+    healthcheck:
+      test: ["CMD", "sh", "-c",
+            "curl -s -X POST --data '{\"jsonrpc\":\"2.0\",\"method\":\"net_enode\",\"params\":[],\"id\":1}' \
+            -H 'Content-Type: application/json' http://localhost:8546 | grep -q 'enode://'"]
+      interval: 5s
+      retries: 10
+      start_period: 10s
+
+  node3:
+    networks:
+      - besu-net
+    build:
+        context: .
+        dockerfile: Dockerfile
+    container_name: besu-node3
+    volumes:
+      - ./genesis.json:/config/genesis.json
+      - ./nodes/node3/data:/data
+      - ./config/permissions_config.toml:/config/permissions_config.toml
+    command: >
+      --data-path=/data
+      --genesis-file=/config/genesis.json
+      --permissions-nodes-config-file-enabled
+      --permissions-accounts-config-file-enabled
+      --rpc-http-enabled
+      --rpc-http-api=ADMIN,ETH,NET,PERM,IBFT
+      --host-allowlist="*"
+      --rpc-http-cors-origins="*"
+      --rpc-http-port=8547
+      --p2p-port=30305
+      --profile=ENTERPRISE
+    ports:
+      - "8547:8547"
+      - "30305:30305"
+    healthcheck:
+      test: ["CMD", "sh", "-c",
+            "curl -s -X POST --data '{\"jsonrpc\":\"2.0\",\"method\":\"net_enode\",\"params\":[],\"id\":1}' \
+            -H 'Content-Type: application/json' http://localhost:8547 | grep -q 'enode://'"]
+      interval: 5s
+      retries: 10
+      start_period: 10s
+
+
+  node4:
+    networks:
+      - besu-net
+    build:
+        context: .
+        dockerfile: Dockerfile
+    container_name: besu-node4
+    volumes:
+      - ./genesis.json:/config/genesis.json
+      - ./nodes/node4/data:/data
+      - ./config/permissions_config.toml:/config/permissions_config.toml
+    command: >
+      --data-path=/data
+      --genesis-file=/config/genesis.json
+      --permissions-nodes-config-file-enabled
+      --permissions-accounts-config-file-enabled
+      --rpc-http-enabled
+      --rpc-http-api=ADMIN,ETH,NET,PERM,IBFT
+      --host-allowlist="*"
+      --rpc-http-cors-origins="*"
+      --rpc-http-port=8548
+      --p2p-port=30306
+      --profile=ENTERPRISE
+    ports:
+      - "8548:8548"
+      - "30306:30306"
+    healthcheck:
+      test: ["CMD", "sh", "-c",
+            "curl -s -X POST --data '{\"jsonrpc\":\"2.0\",\"method\":\"net_enode\",\"params\":[],\"id\":1}' \
+            -H 'Content-Type: application/json' http://localhost:8548 | grep -q 'enode://'"]
+      interval: 5s
+      retries: 10
+      start_period: 10s
+
+
+  network-setup:
+    build:
+        context: .
+        dockerfile: Dockerfile
+    container_name: besu-network-setup
+    volumes:
+      - ./network-setup.sh:/network-setup.sh
+    entrypoint: ["/bin/sh", "/network-setup.sh"]
+    depends_on:
+      node1:
+        condition: service_healthy
+      node2:
+        condition: service_healthy
+      node3:
+        condition: service_healthy
+      node4:
+        condition: service_healthy
+networks:
+  besu-net:
+    driver: bridge
