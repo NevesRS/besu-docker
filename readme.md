@@ -9,7 +9,7 @@ Este repositório configura uma rede blockchain usando Hyperledger Besu. Os serv
 ## Como rodar
 Clone o repositório:
 ```sh
-git clone [https://github.com/seu-usuario/seu-repositorio.git](https://github.com/NevesRS/besu-docker.git)
+git clone https://github.com/NevesRS/besu-docker.git
 cd besu-docker
 ```
 
