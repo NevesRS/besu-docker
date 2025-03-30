@@ -1,0 +1,23 @@
+# Ignorar diretórios de cache e banco de dados do Besu
+nodes/**/data/
+nodes/**/cache/
+nodes/**/database/
+nodes/**/LOCK
+nodes/**/logs/
+
+# Ignorar arquivos temporários
+*.log
+*.tmp
+*.pid
+
+# Ignorar arquivos de configuração locais
+config/local-config.json
+config/local-*.toml
+
+# Ignorar arquivos do Docker
+docker-compose.override.yml
+.env
+
+# Ignorar dependências do Node.js (caso esteja usando)
+node_modules/
+dist/

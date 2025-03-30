@@ -19,7 +19,6 @@ get_enode() {
     local enode=$(curl -s -X POST --data '{"jsonrpc":"2.0","method":"net_enode","params":[],"id":1}' \
         -H "Content-Type: application/json" http://$node_name:$node_port | jq -r '.result')
 
-    # Substituir 127.0.0.1 ou nomes de contêiner pelo IP real do contêiner
     echo $enode | sed -E "s/@(127.0.0.1|$node_name)/@$node_ip/g"
 }
 
@@ -38,20 +37,44 @@ ALLOWLIST_JSON=$(jq -n --arg n1 "$NODE1" --arg n2 "$NODE2" --arg n3 "$NODE3" --a
 echo "Allowlist JSON: $ALLOWLIST_JSON"
 echo "Aplicando permissão nos nós..."
 
-for node in besu-node1:8545 besu-node2:8546 besu-node3:8547 besu-node4:8548; do
-    curl -s -X POST --data "$ALLOWLIST_JSON" -H "Content-Type: application/json" http://$node
-    sleep 2
-done
+curl -s -X POST --data "$ALLOWLIST_JSON" -H "Content-Type: application/json" http://besu-node1:8545
+sleep 5
+curl -s -X POST --data "$ALLOWLIST_JSON" -H "Content-Type: application/json" http://besu-node2:8546
+sleep 5
+curl -s -X POST --data "$ALLOWLIST_JSON" -H "Content-Type: application/json" http://besu-node3:8547
+sleep 5
+curl -s -X POST --data "$ALLOWLIST_JSON" -H "Content-Type: application/json" http://besu-node4:8548
 
 sleep 10  # Pequeno delay para permitir a configuração
 
 echo "Conectando os nós..."
-for target_node in besu-node2:8546 besu-node3:8547 besu-node4:8548; do
-    echo "Adicionando $NODE1 a $target_node"
-    curl -s -X POST --data "{\"jsonrpc\":\"2.0\",\"method\":\"admin_addPeer\",\"params\":[\"$NODE1\"],\"id\":1}" \
-        -H "Content-Type: application/json" http://$target_node
-    sleep 2
-done
+curl -s -X POST --data "{\"jsonrpc\":\"2.0\",\"method\":\"admin_addPeer\",\"params\":[\"$NODE1\"],\"id\":1}" \
+    -H "Content-Type: application/json" http://besu-node2:8546
+sleep 5
+
+curl -s -X POST --data "{\"jsonrpc\":\"2.0\",\"method\":\"admin_addPeer\",\"params\":[\"$NODE1\"],\"id\":1}" \
+    -H "Content-Type: application/json" http://besu-node3:8547
+sleep 5
+
+curl -s -X POST --data "{\"jsonrpc\":\"2.0\",\"method\":\"admin_addPeer\",\"params\":[\"$NODE1\"],\"id\":1}" \
+    -H "Content-Type: application/json" http://besu-node4:8548
+sleep 5
+
+curl -s -X POST --data "{\"jsonrpc\":\"2.0\",\"method\":\"admin_addPeer\",\"params\":[\"$NODE2\"],\"id\":1}" \
+    -H "Content-Type: application/json" http://besu-node3:8547
+sleep 5
+
+curl -s -X POST --data "{\"jsonrpc\":\"2.0\",\"method\":\"admin_addPeer\",\"params\":[\"$NODE2\"],\"id\":1}" \
+    -H "Content-Type: application/json" http://besu-node4:8548
+sleep 5
+
+curl -s -X POST --data "{\"jsonrpc\":\"2.0\",\"method\":\"admin_addPeer\",\"params\":[\"$NODE3\"],\"id\":1}" \
+    -H "Content-Type: application/json" http://besu-node4:8548
+sleep 5
+
+curl -s -X POST --data "{\"jsonrpc\":\"2.0\",\"method\":\"admin_addPeer\",\"params\":[\"$NODE4\"],\"id\":1}" \
+    -H "Content-Type: application/json" http://besu-node1:8546
+sleep 3
 
 echo "Confirmando conexões P2P"
 curl -s -X POST --data '{"jsonrpc":"2.0","method":"net_peerCount","params":[],"id":1}' \

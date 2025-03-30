@@ -1,12 +1,11 @@
 FROM hyperledger/besu:latest
 
-RUN apt-get update
-RUN apt-get install -y curl
-RUN apt-get install -y jq
+# Instala pacotes necessários para os nós
+RUN apt-get update && apt-get install -y curl jq && rm -rf /var/lib/apt/lists/*
+
+# Define o diretório de trabalho
 WORKDIR /opt/besu
 
-COPY config /config
-COPY entrypoint.sh /entrypoint.sh
-RUN chmod +x /entrypoint.sh
-# COPY start.sh /start.sh
-# RUN chmod +x /start.sh
+# Copia apenas o script de inicialização (para network-setup)
+COPY network-setup.sh /network-setup.sh
+RUN chmod +x /network-setup.sh
