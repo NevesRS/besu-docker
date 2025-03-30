@@ -41,7 +41,7 @@ Verifique conexões P2P (8545, 8546, 8547 ou 8548):
 ```sh
 curl -s -X POST --data '{"jsonrpc":"2.0","method":"net_peerCount","params":[],"id":1}' -H "Content-Type: application/json" http://127.0.0.1:8545 
 ```
-0
+
 ## Como desligar
 ```sh
 docker-compose down
