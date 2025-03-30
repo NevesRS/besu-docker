@@ -95,7 +95,7 @@ services:
     container_name: besu-network-setup
     volumes:
       - ./network-setup.sh:/network-setup.sh
-    entrypoint: [ "/bin/sh", "/network-setup.sh" ]  
+    entrypoint: [ "/bin/sh", "/network-setup.sh" ]
     depends_on:
       node1:
         condition: service_healthy
