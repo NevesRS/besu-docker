@@ -1,67 +1,73 @@
 # Blockchain Besu Network
 
-Este repositório configura uma rede blockchain usando Hyperledger Besu. Os serviços são orquestrados via Docker Compose para facilitar a implantação.
+Este repositório configura uma rede blockchain utilizando o **Hyperledger Besu**. Os serviços são orquestrados via **Docker Compose** para facilitar a implantação e gerenciamento.
 
 ## Requisitos
+Certifique-se de ter os seguintes softwares instalados:
 - [Docker](https://www.docker.com/get-started)
 - [Docker Compose](https://docs.docker.com/compose/install/)
 
-## Como rodar
-Clone o repositório:
-```sh
-git clone https://github.com/NevesRS/besu-docker.git
-cd besu-docker
-```
+## Como rodar a rede Blockchain
 
-Construa e suba os contêineres em segundo plano:
-```sh
-docker-compose up -d --build
-```
+1. Clone o repositório:
+    ```sh
+    git clone https://github.com/NevesRS/besu-docker.git
+    cd besu-docker
+    ```
 
-Isso criará:
-- **Quatro nós Besu** configurados para se conectarem automaticamente
-- **Um contêiner de configuração** para definir permissões e conexões entre os nós
+2. Construa e inicie os contêineres:
+    ```sh
+    docker-compose up -d --build
+    ```
+
+### O que será criado:
+- **Quatro nós Besu** conectados automaticamente em uma rede P2P
+- **Um contêiner de configuração** para definir permissões e conexões
 - **Uma rede Docker interna (`besu-net`)**
+- **Endereços locais disponíveis:** `http://127.0.0.1:8545`, `http://127.0.0.1:8546`, `http://127.0.0.1:8547`, `http://127.0.0.1:8548`
 
-- Observação:
-- **A REDE ESTARÁ DISPONÍVEL NAS PORTAS LOCAIS 8545, 8546, 8547 E 8548, É POSSÍVEL ESCOLHER QUALQUER UMA DELAS PARA ENVIAR O CONTRATO JÁ QUE TODAS ESTÃO CONECTADAS DE FORMA P2P.**
+## Verificação dos nós
 
-## Como verificar os nós
-Veja os contêineres rodando:
+Veja os contêineres em execução:
 ```sh
 docker ps
 ```
 
-Confira os logs de um nó:
+Acompanhe os logs de um nó:
 ```sh
 docker logs -f besu-node1
 ```
 
-Verifique conexões P2P (8545, 8546, 8547 ou 8548):
+Verifique a quantidade de pares conectados:
 ```sh
-curl -s -X POST --data '{"jsonrpc":"2.0","method":"net_peerCount","params":[],"id":1}' -H "Content-Type: application/json" http://127.0.0.1:8545 
+curl -s -X POST --data '{"jsonrpc":"2.0","method":"net_peerCount","params":[],"id":1}' -H "Content-Type: application/json" http://127.0.0.1:8545
 ```
 
-## Como desligar
+## Como desligar a rede
+
+Para parar e remover os contêineres:
 ```sh
 docker-compose down
 ```
 
-##É possível acessar o Remix IDE e dar deploy dos contratos, para isso basta seguir as etapas abaixo:
-- Crie uma nova rede no metamask
-![image](https://github.com/user-attachments/assets/cc9df1e0-22e2-4b24-9e77-db5197c5a05d)
+## Deploy de contratos no Remix IDE
 
-- Configure com os dados da imagem:
-![image](https://github.com/user-attachments/assets/e9da8417-ba8f-4a38-9740-c05629eb4256)
+1. **Configure uma nova rede no Metamask:**
+   - Abra o **Metamask** e clique em "Adicionar Rede".
+   - Preencha os dados conforme a configuração da imagem abaixo:
+   
+   ![Configuração Metamask](https://github.com/user-attachments/assets/e9da8417-ba8f-4a38-9740-c05629eb4256)
 
-- Adicione uma nova conta ao clicar em:
-![image](https://github.com/user-attachments/assets/f197e96e-3016-4942-b57c-d0252468ecb0)
-![image](https://github.com/user-attachments/assets/baa7f8f2-b190-4ac4-a186-1b0c0249ed10)
-![image](https://github.com/user-attachments/assets/4e682957-0d05-430d-97f1-0633974f15a0)
-- Adicione a seguinte chave privada, c87509a1c067bbde78beb793e6fa76530b6382a4c0241e5e4a9ec0a0f44dc0d3, no campo abaixo:
-![image](https://github.com/user-attachments/assets/2e59ffd1-b116-436f-bc44-2a09b22a96bb)
-- Ao abrir o remix e clicar na extensão, clique em adicionar conta 2:
-![image](https://github.com/user-attachments/assets/cd670756-3712-4339-8acd-9ff494e3511c)
-- Agora é possível usar a conta da rede para realizar transações
+2. **Adicione uma conta com chave privada:**
+   - Acesse "Importar Conta" no Metamask.
+   - Insira a chave privada abaixo:
+   ```
+   c87509a1c067bbde78beb793e6fa76530b6382a4c0241e5e4a9ec0a0f44dc0d3
+   ```
 
+3. **Conecte o Remix IDE ao Metamask:**
+   - Abra o **Remix IDE** e clique na extensão do Metamask.
+   - Selecione a conta adicionada e conecte-se à rede.
+
+Agora você pode **implantar e interagir com contratos inteligentes** na sua rede Hyperledger Besu! 🚀
 
