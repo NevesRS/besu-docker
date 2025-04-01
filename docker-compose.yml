@@ -11,7 +11,7 @@ services:
       - ./nodes/node1/data:/data
       - ./config/permissions_config.toml:/config/permissions_config.toml
     command: >
-      --data-path=/data --genesis-file=/config/genesis.json --permissions-nodes-config-file-enabled --permissions-accounts-config-file-enabled --rpc-http-enabled --rpc-http-api=ADMIN,ETH,NET,PERM,IBFT --host-allowlist='*' --rpc-http-cors-origins='*' --rpc-http-port=8545 --p2p-port=30303 --profile=ENTERPRISE
+      --data-path=/data --genesis-file=/config/genesis.json --permissions-nodes-config-file-enabled --permissions-accounts-config-file-enabled --rpc-http-enabled --rpc-http-api=ADMIN,ETH,NET,PERM,IBFT --host-allowlist='*' --rpc-http-cors-origins='*' --min-gas-price=0 --rpc-http-port=8545 --p2p-port=30303 --profile=ENTERPRISE
     ports:
       - "8545:8545"
       - "30303:30303"
@@ -33,7 +33,7 @@ services:
       - ./nodes/node2/data:/data
       - ./config/permissions_config.toml:/config/permissions_config.toml
     command: >
-      --data-path=/data --genesis-file=/config/genesis.json --permissions-nodes-config-file-enabled --permissions-accounts-config-file-enabled --rpc-http-enabled --rpc-http-api=ADMIN,ETH,NET,PERM,IBFT --host-allowlist="*" --rpc-http-cors-origins="*" --rpc-http-port=8546 --p2p-port=30304 --profile=ENTERPRISE
+      --data-path=/data --genesis-file=/config/genesis.json --permissions-nodes-config-file-enabled --permissions-accounts-config-file-enabled --rpc-http-enabled --rpc-http-api=ADMIN,ETH,NET,PERM,IBFT --host-allowlist="*" --rpc-http-cors-origins="*" --min-gas-price=0 --rpc-http-port=8546 --p2p-port=30304 --profile=ENTERPRISE
     ports:
       - "8546:8546"
       - "30304:30304"
@@ -55,7 +55,7 @@ services:
       - ./nodes/node3/data:/data
       - ./config/permissions_config.toml:/config/permissions_config.toml
     command: >
-      --data-path=/data --genesis-file=/config/genesis.json --permissions-nodes-config-file-enabled --permissions-accounts-config-file-enabled --rpc-http-enabled --rpc-http-api=ADMIN,ETH,NET,PERM,IBFT --host-allowlist="*" --rpc-http-cors-origins="*" --rpc-http-port=8547 --p2p-port=30305 --profile=ENTERPRISE
+      --data-path=/data --genesis-file=/config/genesis.json --permissions-nodes-config-file-enabled --permissions-accounts-config-file-enabled --rpc-http-enabled --rpc-http-api=ADMIN,ETH,NET,PERM,IBFT --host-allowlist="*" --rpc-http-cors-origins="*" --min-gas-price=0 --rpc-http-port=8547 --p2p-port=30305 --profile=ENTERPRISE
     ports:
       - "8547:8547"
       - "30305:30305"
@@ -77,7 +77,7 @@ services:
       - ./nodes/node4/data:/data
       - ./config/permissions_config.toml:/config/permissions_config.toml
     command: >
-      --data-path=/data --genesis-file=/config/genesis.json --permissions-nodes-config-file-enabled --permissions-accounts-config-file-enabled --rpc-http-enabled --rpc-http-api=ADMIN,ETH,NET,PERM,IBFT --host-allowlist="*" --rpc-http-cors-origins="*" --rpc-http-port=8548 --p2p-port=30306 --profile=ENTERPRISE
+      --data-path=/data --genesis-file=/config/genesis.json --permissions-nodes-config-file-enabled --permissions-accounts-config-file-enabled --rpc-http-enabled --rpc-http-api=ADMIN,ETH,NET,PERM,IBFT --host-allowlist="*" --rpc-http-cors-origins="*" --min-gas-price=0 --rpc-http-port=8548 --p2p-port=30306 --profile=ENTERPRISE
     ports:
       - "8548:8548"
       - "30306:30306"
